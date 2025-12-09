@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import PComponent_Eva3.PComponent.model.Comuna;
 
-public interface ComunaRepository extends JpaRepository<Comuna, Long>{
+public interface ComunaRepository extends JpaRepository<Comuna, Integer>{
     
 }

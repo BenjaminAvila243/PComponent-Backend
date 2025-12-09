@@ -34,8 +34,12 @@ public class MetodopagoService {
     }
 
 
-    public Metodopago updateMetodoPagoRepository(Metodopago metodoPago) {
-        return save(metodoPago);
+    public Metodopago partialUpdate(Metodopago metodoPago) {
+        Metodopago existingMetodoPago = metodoPagoRepository.findById(metodoPago.getId()).orElse(null);
+        if (existingMetodoPago != null) {
+            return metodoPagoRepository.save(existingMetodoPago);
+        }
+        return null;
     }
 
 

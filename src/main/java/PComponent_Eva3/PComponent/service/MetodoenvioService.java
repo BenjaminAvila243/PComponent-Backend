@@ -27,8 +27,21 @@ public class MetodoenvioService {
         return metodoEnvio;
     }
 
-    public Metodoenvio updateMetodoEnvio(Metodoenvio metodoEnvio) {
-        return save(metodoEnvio);
+    public Metodoenvio partialUpdate(Metodoenvio metodoEnvio) {
+        Metodoenvio existingMetodoEnvio = metodoEnvioRepository.findById(metodoEnvio.getId()).orElse(null);
+        if (existingMetodoEnvio != null) {
+            if (metodoEnvio.getNombre() != null) {
+                existingMetodoEnvio.setNombre(metodoEnvio.getNombre());
+            }
+            if (metodoEnvio.getTipoEnvio() != null) {
+                existingMetodoEnvio.setTipoEnvio(metodoEnvio.getTipoEnvio());
+            }
+            if (metodoEnvio.getCosto() != null) {
+                existingMetodoEnvio.setCosto(metodoEnvio.getCosto());
+            }
+            return metodoEnvioRepository.save(existingMetodoEnvio);
+        }
+        return null;
     }
 
     public Metodoenvio save(Metodoenvio metodoEnvio) {

@@ -3,12 +3,15 @@ package PComponent_Eva3.PComponent.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import PComponent_Eva3.PComponent.model.Metodoenvio;
 import PComponent_Eva3.PComponent.model.Producto;
-import PComponent_Eva3.PComponent.repository.MetodoEnvioRepository;
 import PComponent_Eva3.PComponent.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
 
+@Service
+@Transactional
+@SuppressWarnings("null")
 public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
@@ -63,7 +66,7 @@ public class ProductoService {
 
 
     public void deleteById(Integer id) {
-        productoRepository.deleteById(id);;
+        productoRepository.deleteById(id);
     }
 
 }

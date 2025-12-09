@@ -27,6 +27,33 @@ public class CarritoService {
     @Autowired
     private CarritoItemRepository itemRepository;
 
+    public List<Carrito> findAll() {
+        return carritoRepository.findAll();
+    }
+
+    public Carrito findById(Integer id) {
+        return carritoRepository.findById(id).orElse(null);
+    }
+
+    public Carrito save(Carrito carrito) {
+        return carritoRepository.save(carrito);
+    }
+
+    public Carrito partialUpdate(Carrito carrito) {
+        Carrito existingCarrito = carritoRepository.findById(carrito.getId()).orElse(null);
+        if (existingCarrito != null) {
+            if (carrito.getItems() != null && !carrito.getItems().isEmpty()) {
+                existingCarrito.setItems(carrito.getItems());
+            }
+            return carritoRepository.save(existingCarrito);
+        }
+        return null;
+    }
+
+    public void deleteById(Integer id) {
+        carritoRepository.deleteById(id);
+    }
+
     public Carrito crearCarrito() {
         return carritoRepository.save(new Carrito());
     }

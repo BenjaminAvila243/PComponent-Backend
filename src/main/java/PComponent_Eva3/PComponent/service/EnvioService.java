@@ -15,20 +15,32 @@ import jakarta.transaction.Transactional;
 public class EnvioService {
     
      @Autowired
-    private EnvioRepository comunaRepository;
+    private EnvioRepository envioRepository;
 
     public List<Envio> findAll() {
-        return comunaRepository.findAll();
+        return envioRepository.findAll();
     }
 
     @SuppressWarnings("null")
     public Envio findById(Integer id) {
-        return comunaRepository.findById(id).orElse(null);
+        return envioRepository.findById(id).orElse(null);
     }
 
     @SuppressWarnings("null")
-    public Envio save(Envio comuna) {
-        return comunaRepository.save(comuna);
+    public Envio save(Envio envio) {
+        return envioRepository.save(envio);
+    }
+
+    public Envio partialUpdate(Envio envio) {
+        Envio existingEnvio = envioRepository.findById(envio.getId()).orElse(null);
+        if (existingEnvio != null) {
+            return envioRepository.save(existingEnvio);
+        }
+        return null;
+    }
+
+    public void deleteById(Integer id) {
+        envioRepository.deleteById(id);
     } 
     
 }
