@@ -52,10 +52,7 @@ public class Usuario {
     @JoinColumn(name = "comuna_id")
     private Comuna comuna;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "usuario_rol",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "rol_id")
-    )
-    private Set<Rol> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "id_rol")
+    private Rol rol;
 }

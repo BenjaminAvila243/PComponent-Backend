@@ -13,38 +13,35 @@ import jakarta.transaction.Transactional;
 @Transactional
 @SuppressWarnings("null")
 public class MetodopagoService {
-
+    
     @Autowired
     private MetodopagoRepository metodoPagoRepository;
 
+
+    @SuppressWarnings("null")
+    public Metodopago save(Metodopago metodoPago) {
+        return metodoPagoRepository.save(metodoPago);
+    } 
+
+    @SuppressWarnings("null")
+    public Metodopago findById(Integer id) {
+        return metodoPagoRepository.findById(id).orElse(null);
+    }
+
+    @SuppressWarnings("null")
     public List<Metodopago> findAll() {
         return metodoPagoRepository.findAll();
     }
 
-    public Metodopago findById(Integer id) {
-        Metodopago metodopago = metodoPagoRepository.findById(id).orElse(null);
-        return metodopago;
+
+    public Metodopago updateMetodoPagoRepository(Metodopago metodoPago) {
+        return save(metodoPago);
     }
 
-    public Metodopago save(Metodopago metodopago) {
-        return metodoPagoRepository.save(metodopago);
-    }
-
-    public Metodopago partialUpdate(Metodopago metodopago) {
-        Metodopago existingMetodopago = metodoPagoRepository.findById(metodopago.getId()).orElse(null);
-        
-        if (existingMetodopago != null) {
-
-            if (metodopago.getNombreMetodo() != null) {
-                existingMetodopago.setNombreMetodo(metodopago.getNombreMetodo());
-            }
-
-            return metodoPagoRepository.save(existingMetodopago);
-        }
-        return null;
-    }
 
     public void deleteById(Integer id) {
         metodoPagoRepository.deleteById(id);
     }
+
+
 }

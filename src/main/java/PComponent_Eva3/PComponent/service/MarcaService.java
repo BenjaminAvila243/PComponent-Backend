@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 @Transactional
 @SuppressWarnings("null")
 public class MarcaService {
-
     @Autowired
     private MarcaRepository marcaRepository;
 
@@ -22,52 +21,28 @@ public class MarcaService {
     }
 
     public Marca findById(Integer id) {
-        return marcaRepository.findById(id).orElse(null);
+        Marca Marca = marcaRepository.findById(id).orElse(null);
+        return Marca;
     }
 
-    public Marca save(Marca marca) {
-        return marcaRepository.save(marca);
+    public Marca save(Marca Marca) {
+        return marcaRepository.save(Marca);
+    }
+
+    public Marca partialUpdate(Marca Marca){
+        Marca existingMarca = marcaRepository.findById(Marca.getId()).orElse(null);
+        if (existingMarca != null) {
+            if (Marca.getNombreMarca() != null) {
+                existingMarca.setNombreMarca(Marca.getNombreMarca());
+            }
+
+            return marcaRepository.save(existingMarca);
+        }
+        return null;
     }
 
     public void deleteById(Integer id) {
         marcaRepository.deleteById(id);
     }
 
-    public Marca actualizarCategoria(Integer id, Marca marcaActualizada) {
-        Marca marcaExistente = marcaRepository.findById(id).orElse(null);
-
-        if (marcaExistente != null) {
-            marcaExistente.setNombreMarca(marcaActualizada.getNombreMarca());
-            marcaExistente.setDescripcion(marcaActualizada.getDescripcion());
-            return marcaRepository.save(marcaExistente);
-        }
-        return null;
-    }
-
-    public Marca partialUpdate(Marca marca) {
-
-        Marca existingMarca = marcaRepository.findById(marca.getId()).orElse(null);
-
-        if (existingMarca != null) {
-
-            if (marca.getNombreMarca() != null) {
-                existingMarca.setNombreMarca(marca.getNombreMarca());
-            }
-            if (marca.getDescripcion() != null) {
-                existingMarca.setDescripcion(marca.getDescripcion());
-            }
-        
-            return marcaRepository.save(existingMarca);
-
-        }
-        return null;
-    }
-
-    public boolean eliminarMarca(Integer id) {
-        if (marcaRepository.existsById(id)) {
-            marcaRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
 }

@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import PComponent_Eva3.PComponent.model.Carrito;
+import PComponent_Eva3.PComponent.model.CarritoItem;
+import PComponent_Eva3.PComponent.model.Producto;
+import PComponent_Eva3.PComponent.repository.CarritoItemRepository;
 import PComponent_Eva3.PComponent.repository.CarritoRepository;
+import PComponent_Eva3.PComponent.repository.ProductoRepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -17,37 +21,69 @@ public class CarritoService {
     @Autowired
     private CarritoRepository carritoRepository;
 
-    public List<Carrito> findAll() {
-        return carritoRepository.findAll();
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private CarritoItemRepository itemRepository;
+
+    public Carrito crearCarrito() {
+        return carritoRepository.save(new Carrito());
     }
 
-    public Carrito findById(Integer id) {
+    public Carrito obtenerCarrito(Integer id) {
         return carritoRepository.findById(id).orElse(null);
     }
 
-    public Carrito save(Carrito carrito) {
+    public Carrito agregarProducto(Integer carritoId, Integer productoId) {
+        Carrito carrito = obtenerCarrito(carritoId);
+        Producto producto = productoRepository.findById(productoId).orElse(null);
+
+        if (carrito == null || producto == null) return null;
+
+
+        for (CarritoItem item : carrito.getItems()) {
+            if (item.getProducto().getId().equals(productoId)) {
+                item.setCantidad(item.getCantidad() + 1);
+                itemRepository.save(item);
+                return carritoRepository.save(carrito);
+            }
+        }
+
+
+        CarritoItem nuevo = new CarritoItem();
+        nuevo.setProducto(producto);
+        nuevo.setCantidad(1);
+        itemRepository.save(nuevo);
+
+        carrito.getItems().add(nuevo);
         return carritoRepository.save(carrito);
     }
 
-    public Carrito partialUpdate(Carrito carrito) {
-        Carrito existing = carritoRepository.findById(carrito.getId()).orElse(null);
+    public Carrito actualizarCantidad(Integer carritoId, Integer itemId, Integer cantidad) {
+        Carrito carrito = obtenerCarrito(carritoId);
+        if (carrito == null) return null;
 
-        if (existing == null) {
-            return null;
-        }
+        CarritoItem item = itemRepository.findById(itemId).orElse(null);
+        if (item == null) return null;
 
-        if (carrito.getNombreProducto() != null) {
-            existing.setNombreProducto(carrito.getNombreProducto());
-        }
+        item.setCantidad(cantidad);
+        itemRepository.save(item);
 
-        if (carrito.getCantidad() != null) {
-            existing.setCantidad(carrito.getCantidad());
-        }
-
-        return carritoRepository.save(existing);
+        return carritoRepository.save(carrito);
     }
 
-    public void deleteById(Integer id) {
+    public Carrito eliminarItem(Integer carritoId, Integer itemId) {
+        Carrito carrito = obtenerCarrito(carritoId);
+        if (carrito == null) return null;
+
+        carrito.getItems().removeIf(i -> i.getId().equals(itemId));
+        itemRepository.deleteById(itemId);
+
+        return carritoRepository.save(carrito);
+    }
+
+    public void vaciarCarrito(Integer id) {
         carritoRepository.deleteById(id);
     }
 }

@@ -13,61 +13,26 @@ import jakarta.transaction.Transactional;
 @Transactional
 @SuppressWarnings("null")
 public class MetodoenvioService {
-    
+
     @Autowired
     private MetodoEnvioRepository metodoEnvioRepository;
 
     public List<Metodoenvio> findAll() {
-        return metodoEnvioRepository.findAll();
+        List<Metodoenvio> metodoEnvios = metodoEnvioRepository.findAll();
+        return metodoEnvios;
     }
 
     public Metodoenvio findById(Integer id) {
-        Metodoenvio metodoenvio = metodoEnvioRepository.findById(id).orElse(null);
-        return metodoenvio;
+        Metodoenvio metodoEnvio = metodoEnvioRepository.findById(id).orElse(null);
+        return metodoEnvio;
     }
 
-    public Metodoenvio save(Metodoenvio metodoenvio) {
-        return metodoEnvioRepository.save(metodoenvio);
+    public Metodoenvio updateMetodoEnvio(Metodoenvio metodoEnvio) {
+        return save(metodoEnvio);
     }
 
-    public Metodoenvio partialUpdate(Metodoenvio metodoenvio){
-        Metodoenvio existingMetodoenvio = metodoEnvioRepository.findById(metodoenvio.getId()).orElse(null);
-        if (existingMetodoenvio != null) {
-            if (metodoenvio.getNombre() != null) {
-                existingMetodoenvio.setNombre(metodoenvio.getNombre());
-            }
-
-            if(metodoenvio.getTipoEnvio() != null) {
-                existingMetodoenvio.setTipoEnvio(metodoenvio.getTipoEnvio());
-            }
-
-            if(metodoenvio.getCosto() != null) {
-                existingMetodoenvio.setCosto(metodoenvio.getCosto());
-            }
-
-            if(metodoenvio.getTiempoEntrega() != null) {
-                existingMetodoenvio.setTiempoEntrega(metodoenvio.getTiempoEntrega());
-            }
-
-            if(metodoenvio.getDireccion() != null) {
-                existingMetodoenvio.setDireccion(metodoenvio.getDireccion());
-            }
-
-            if(metodoenvio.getTelefono() != null) {
-                existingMetodoenvio.setTelefono(metodoenvio.getTelefono());
-            }
-
-            if(metodoenvio.getCorreo() != null) {
-                existingMetodoenvio.setCorreo(metodoenvio.getCorreo());
-            }
-
-            if(metodoenvio.getIdVenta() != null) {
-                existingMetodoenvio.setIdVenta(metodoenvio.getIdVenta());
-            }
-
-            return save(existingMetodoenvio);
-        }
-        return null;
+    public Metodoenvio save(Metodoenvio metodoEnvio) {
+        return metodoEnvioRepository.save(metodoEnvio);
     }
 
     public void deleteById(Integer id) {

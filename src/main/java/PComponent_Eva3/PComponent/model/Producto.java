@@ -24,20 +24,25 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(length = 20,nullable = false,unique = true)
-    private Integer numero;
+    private Integer id;  
     
-    @OneToMany(mappedBy = "producto")
-    private List<VentaProducto> ventaProductos;
+    @Column(name = "nombreProducto", nullable = false, length = 30)
+    private String nombre;
+
+    @Column(name = "precioProducto", nullable = false)
+    private Integer precio;
+    
+    @Column(name = "imagenProducto", nullable = true)
+    private String imagenUrl;
+
+    @Column(name = "descripcionProducto", nullable = false)
+    private String descripcion;
+
+    @Column(name = "stockProducto",nullable = true)
+    private Integer stock;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
-
-    @ManyToOne
-    @JoinColumn(name = "marca_id")
+    @JoinColumn(name = "marca_id", nullable=false)
     private Marca marca;
 
 }

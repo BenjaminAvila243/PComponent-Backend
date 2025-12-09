@@ -3,6 +3,7 @@ package PComponent_Eva3.PComponent.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import PComponent_Eva3.PComponent.model.Usuario;
@@ -16,51 +17,61 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; 
+
     public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios;
     }
 
     public Usuario findById(Integer id) {
-        return usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            usuario.setContraseña(null);
+        }
+        return usuario;
+    }
+
+    public Usuario login(Usuario usuario) {
+        Usuario foundUsuario = usuarioRepository.findByEmail(usuario.getEmail());
+        if (foundUsuario != null &&  passwordEncoder.matches(usuario.getContraseña(), foundUsuario.getContraseña())) {
+            return foundUsuario;
+        }
+        return null;
+    }
+
+    public Usuario updateUsuario(Usuario usuario) {
+        return save(usuario);
     }
 
     public Usuario save(Usuario usuario) {
+        String passwordHasheada = passwordEncoder.encode(usuario.getContraseña());
+        usuario.setContraseña(passwordHasheada);
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario partialUpdate(Usuario usuario) {
-        Usuario existing = usuarioRepository.findById(usuario.getId()).orElse(null);
+    public Usuario partialUpdate(Usuario usuario){
+        Usuario existingUsuario = usuarioRepository.findById(usuario.getId()).orElse(null);
+        if (existingUsuario != null) {
+            if (usuario.getNombre() != null) {
+                existingUsuario.setNombre(usuario.getNombre());
+            }
+            if (usuario.getEmail() != null) {
+                existingUsuario.setEmail(usuario.getEmail());
+            }
 
-        if (existing == null) {
-            return null;
-        }
+            if(usuario.getContraseña() != null) {
+                existingUsuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
+            }
 
-        if (usuario.getNombre() != null) {
-            existing.setNombre(usuario.getNombre());
-        }
-        if (usuario.getApellido() != null) {
-            existing.setApellido(usuario.getApellido());
-        }
-        if (usuario.getRut() != null) {
-            existing.setRut(usuario.getRut());
-        }
-        if (usuario.getTelefono() != null) {
-            existing.setTelefono(usuario.getTelefono());
-        }
-        if (usuario.getEmail() != null) {
-            existing.setEmail(usuario.getEmail());
-        }
-        if (usuario.getContraseña() != null) {
-            existing.setContraseña(usuario.getContraseña());
-        }
-        if (usuario.getComuna() != null) {
-            existing.setComuna(usuario.getComuna());
-        }
-        if (usuario.getRoles() != null) {
-            existing.setRoles(usuario.getRoles());
-        }
+            if(usuario.getRol() != null) {
+                existingUsuario.setRol(usuario.getRol());
+            }
 
-        return usuarioRepository.save(existing);
+            return usuarioRepository.save(existingUsuario);
+        }
+        return null;
     }
 
     public void deleteById(Integer id) {

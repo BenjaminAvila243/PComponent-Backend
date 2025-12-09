@@ -17,46 +17,28 @@ public class VentaService {
     @Autowired
     private VentaRepository ventaRepository;
 
-    public List<Venta> findAll() {
-        return ventaRepository.findAll();
-    }
+    
+    public Venta save(Venta venta) {
+        return ventaRepository.save(venta);
+    } 
 
     public Venta findById(Integer id) {
         return ventaRepository.findById(id).orElse(null);
     }
 
-    public Venta save(Venta venta) {
-        return ventaRepository.save(venta);
+    public List<Venta> findAll() {
+        return ventaRepository.findAll();
     }
 
-    public Venta partialUpdate(Venta venta) {
+    public Venta partialUpdate(Venta venta){
         Venta existingVenta = ventaRepository.findById(venta.getId()).orElse(null);
-
         if (existingVenta != null) {
-
-            if (venta.getUsuario() != null) {
-                existingVenta.setUsuario(venta.getUsuario());
-            }
-
-            if (venta.getMetodoPago() != null) {
-                existingVenta.setMetodoPago(venta.getMetodoPago());
-            }
-
             if (venta.getMetodoEnvio() != null) {
-                existingVenta.setMetodoEnvio(venta.getMetodoEnvio());
-            }
-
-            if (venta.getEstado() != null) {
-                existingVenta.setEstado(venta.getEstado());
-            }
-
-            if (venta.getFecha() != null) {
-                existingVenta.setFecha(venta.getFecha());
+                existingVenta.setMetodoEnvio((venta.getMetodoEnvio()));
             }
 
             return ventaRepository.save(existingVenta);
         }
-
         return null;
     }
 
@@ -64,5 +46,4 @@ public class VentaService {
         ventaRepository.deleteById(id);
     }
 }
-
 
