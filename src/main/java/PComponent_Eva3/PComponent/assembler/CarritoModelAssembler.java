@@ -12,6 +12,7 @@ import PComponent_Eva3.PComponent.model.Carrito;
 @Component
 public class CarritoModelAssembler implements RepresentationModelAssembler<Carrito, EntityModel<Carrito>> {
 
+    @SuppressWarnings("null")
     @Override
     public EntityModel<Carrito> toModel(Carrito carrito) {
         return EntityModel.of(carrito,

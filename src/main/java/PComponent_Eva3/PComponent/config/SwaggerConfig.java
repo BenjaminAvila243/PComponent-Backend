@@ -13,9 +13,9 @@ public class SwaggerConfig {
    public OpenAPI customOpenAPI(){
        return new OpenAPI().info(
            new Info()
-           .title("API demo")
-           .version("0.1")
-           .description("Api de repaso")
+           .title("PComponent")
+           .version("0.2")
+           .description("Api de PComponent")
        );
    }
 
