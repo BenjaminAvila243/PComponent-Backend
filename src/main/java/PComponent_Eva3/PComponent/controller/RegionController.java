@@ -25,11 +25,9 @@ public class RegionController {
     @GetMapping("/{id}")
     public ResponseEntity<Region> findById(@PathVariable Integer id) {
         Region region = regionService.findById(id);
-
         if (region == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(region);
     }
 
@@ -44,6 +42,9 @@ public class RegionController {
             @PathVariable Integer id,
             @RequestBody Region data) {
 
+        // Forzamos a que el ID exista dentro del objeto
+        data.setId(id);
+
         Region updated = regionService.partialUpdate(id, data);
 
         if (updated == null) {
@@ -55,7 +56,6 @@ public class RegionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-
         Region region = regionService.findById(id);
         if (region == null) {
             return ResponseEntity.notFound().build();
