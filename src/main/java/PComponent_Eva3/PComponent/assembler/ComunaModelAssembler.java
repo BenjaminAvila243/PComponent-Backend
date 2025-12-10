@@ -1,5 +1,5 @@
 package PComponent_Eva3.PComponent.assembler;
 
-public class ComunaAssambler {
+public class ComunaModelAssembler {
     
 }

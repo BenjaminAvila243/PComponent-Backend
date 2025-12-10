@@ -1,5 +1,5 @@
 package PComponent_Eva3.PComponent.assembler;
 
-public class UsuarioAssambler {
+public class UsuarioModelAssembler {
     
 }
