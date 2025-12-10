@@ -21,7 +21,6 @@ import PComponent_Eva3.PComponent.model.Envio;
 
 @RestController
 @RequestMapping("/api/envio")
-@Tag(name = "Envio Management System")
 public class EnvioController {
 
     @Autowired
