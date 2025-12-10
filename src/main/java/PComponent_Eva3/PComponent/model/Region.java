@@ -23,4 +23,14 @@ public class Region {
 
     @Column(length = 40,nullable = false)
     private String nombreRegion;
+
+    public Object getNumeroRegion() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNumeroRegion'");
+    }
+
+    public void setNumeroRegion(Object numeroRegion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setNumeroRegion'");
+    }
 }
